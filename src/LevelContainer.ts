@@ -2,6 +2,7 @@ import Container = PIXI.Container;
 import { Texture, TilingSprite } from "pixi.js";
 import { Player } from "./Player";
 import { Platform } from "./Platform";
+import { Main } from "./Main";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 4000;
@@ -9,9 +10,23 @@ export default class LevelContainer extends Container {
     public static PLAYER_1:Player;
     private _background:TilingSprite;
     private _blockSize:number = 50;
+    private BUTTON_LEFT:boolean = false;
+	private BUTTON_RIGHT:boolean = false;
+	private BUTTON_UP:boolean = false;
 
 	constructor() {
-		super();
+        super();
+
+        Main.pixiApp.ticker.add(this.ticker, this);
+        
+        window.addEventListener("keydown",
+			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
+				this.keyDownHandler(e);
+			},);
+		window.addEventListener("keyup",
+			(e:KeyboardEvent) => {
+				this.keyUpHandler(e);
+			},);
 
         this.initBackground();
         this.initPlayer();
@@ -60,8 +75,48 @@ export default class LevelContainer extends Container {
 			}
 		};
 		xhr.send();
+    }
+    
+    private keyDownHandler(e:KeyboardEvent):void {
+		if (e.code == "ArrowRight") {
+			this.BUTTON_RIGHT = true;
+		}
+		if (e.code == "ArrowLeft") {
+			this.BUTTON_LEFT = true;
+		}
+		if (e.code == "ArrowUp") {
+			this.BUTTON_UP = true;
+		}
+	}
+
+	private keyUpHandler(e:KeyboardEvent):void {
+		if (e.code == "ArrowRight") {
+			this.BUTTON_RIGHT = false;
+		}
+		if (e.code == "ArrowLeft") {
+			this.BUTTON_LEFT = false;
+		}
+		if (e.code == "ArrowUp") {
+			this.BUTTON_UP = false;
+		}
+    }
+    
+    private ticker():void {
+        if (this.BUTTON_UP == true) {                                           //******BUTTON_UP
+            LevelContainer.PLAYER_1.y -= 1;
+		}
+
+		if (this.BUTTON_RIGHT == true) {										//******BUTTON_RIGHT
+			LevelContainer.PLAYER_1.x += 1;
+		}
+
+		if (this.BUTTON_LEFT == true) {											//******BUTTON_LEFT
+			LevelContainer.PLAYER_1.x -= 1;
+		} 
 	}
 }
+
+
 
 interface ILevel {
 	blocks:IBlock[];
