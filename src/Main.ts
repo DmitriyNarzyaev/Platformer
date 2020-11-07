@@ -20,6 +20,7 @@ export class Main extends Container {
         const loader:Loader = new Loader();
 		loader.add("background", "bg.png");
 		loader.add("player", "player.png");
+		loader.add("brick_block", "brick_block.jpg");
 		loader.on("complete", ()=> {
 			this.initMainContainer();
 			window.onresize = () => { this.resize(); };

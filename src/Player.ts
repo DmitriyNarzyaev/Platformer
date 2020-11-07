@@ -12,8 +12,8 @@ export class Player extends Container {
 		this.addChild(Player.PLAYER_CONTAINER);
 		Player.PLAYER_SPRITE = Sprite.from("player");
 		Player.PLAYER_CONTAINER.addChild(Player.PLAYER_SPRITE);
-		Player.PLAYER_SPRITE.width /= 3;
-		Player.PLAYER_SPRITE.height /= 3;
+		Player.PLAYER_SPRITE.width /= 4;
+		Player.PLAYER_SPRITE.height /= 4;
 
     }
 }
