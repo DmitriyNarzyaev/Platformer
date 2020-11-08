@@ -3,16 +3,17 @@ import { Texture, TilingSprite } from "pixi.js";
 import { Player } from "./Player";
 import { Platform } from "./Platform";
 import { Main } from "./Main";
+import Stage1 from "./Stage1";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 4000;
     public static readonly HEIGHT:number = 1500;
     public static PLAYER_1:Player;
     private _background:TilingSprite;
-    private _blockSize:number = 50;
     private BUTTON_LEFT:boolean = false;
 	private BUTTON_RIGHT:boolean = false;
-	private BUTTON_UP:boolean = false;
+	private BUTTON_UP:boolean = false;	
+	private _stage1:Stage1								
 
 	constructor() {
         super();
@@ -29,8 +30,8 @@ export default class LevelContainer extends Container {
 			},);
 
         this.initBackground();
-        this.initPlayer();
-        this.stageLoader();
+		this.initPlayer();
+		this.initStage1();
 	}
 
     //создание заднего фона
@@ -46,37 +47,15 @@ export default class LevelContainer extends Container {
 		this.addChild(LevelContainer.PLAYER_1);
 		LevelContainer.PLAYER_1.x = 100;
 		LevelContainer.PLAYER_1.y = 100;
-    }
-
-    //создание платформ
-    private stageLoader():void {
-		const xhr:XMLHttpRequest = new XMLHttpRequest();
-		xhr.responseType = "json";
-		xhr.open("GET", "level_1.json", true);
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					const json:ILevel = xhr.response;
-
-                    let blockImage:string = json.blocks[0].type;
-                    let blockX:number = this._blockSize * json.blocks[0].x;
-                    let blockY:number = this._blockSize * json.blocks[0].y;
-                    let blockWidth:number = this._blockSize * json.blocks[0].width;
-					let blockHeight:number = this._blockSize * json.blocks[0].height;
-
-                    let platform:Platform = new Platform(blockImage, blockWidth, blockHeight);
-					this.addChild(platform);
-					platform.x = blockX
-					platform.y = blockY
-
-				} else {
-					console.log("ERROR");
-				}
-			}
-		};
-		xhr.send();
-    }
-    
+	}
+	
+	//создание наполнения уровня
+	private initStage1():void {
+		this._stage1 = new Stage1();
+		this.addChild(this._stage1);
+	}
+	
+	//Нажатие кнопок
     private keyDownHandler(e:KeyboardEvent):void {
 		if (e.code == "ArrowRight") {
 			this.BUTTON_RIGHT = true;
@@ -89,6 +68,7 @@ export default class LevelContainer extends Container {
 		}
 	}
 
+	//отпуск кнопок
 	private keyUpHandler(e:KeyboardEvent):void {
 		if (e.code == "ArrowRight") {
 			this.BUTTON_RIGHT = false;
@@ -114,18 +94,4 @@ export default class LevelContainer extends Container {
 			LevelContainer.PLAYER_1.x -= 1;
 		} 
 	}
-}
-
-
-
-interface ILevel {
-	blocks:IBlock[];
-}
-
-interface IBlock {
-	type:string;
-	x:number;
-	y:number;
-	width:number;
-	height:number;
 }
