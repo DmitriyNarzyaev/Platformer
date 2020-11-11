@@ -6,7 +6,6 @@ export class Platform extends Container{
         super();
 
         let block:NineSlicePlane = new NineSlicePlane (
-            
 			Texture.from(texture),
 			10,
 			5,

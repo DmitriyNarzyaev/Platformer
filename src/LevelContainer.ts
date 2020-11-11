@@ -4,6 +4,7 @@ import { Player } from "./Player";
 import { Platform } from "./Platform";
 import { Main } from "./Main";
 import Stage1 from "./Stage1";
+import HitTest from "./Hit_Test";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 4000;
@@ -13,21 +14,22 @@ export default class LevelContainer extends Container {
     private BUTTON_LEFT:boolean = false;
 	private BUTTON_RIGHT:boolean = false;
 	private BUTTON_UP:boolean = false;	
-	private _stage1:Stage1								
+	private _stage1:Stage1
+	public static PLATFORM_ARRAY:Platform[] = [];						
 
 	constructor() {
-        super();
-
+		super();
+		
         Main.pixiApp.ticker.add(this.ticker, this);
         
         window.addEventListener("keydown",
 			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
 				this.keyDownHandler(e);
-			},);
+		},);
 		window.addEventListener("keyup",
 			(e:KeyboardEvent) => {
 				this.keyUpHandler(e);
-			},);
+		},);
 
         this.initBackground();
 		this.initPlayer();
@@ -82,16 +84,106 @@ export default class LevelContainer extends Container {
     }
     
     private ticker():void {
-        if (this.BUTTON_UP == true) {                                           //******BUTTON_UP
-            LevelContainer.PLAYER_1.y -= 1;
+		let limitX:number;
+		let limitY:number;
+		let canMove:boolean = true;
+		LevelContainer.PLAYER_1.speedY += LevelContainer.PLAYER_1.gravity;
+		if (LevelContainer.PLAYER_1.speedY > 0) {
+			let correctedY:number = null;
+			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
+				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
+				limitY = platform.y - LevelContainer.PLAYER_1.height;
+				if (
+					LevelContainer.PLAYER_1.y <= limitY &&
+					LevelContainer.PLAYER_1.y + LevelContainer.PLAYER_1.speedY > limitY &&
+					HitTest.horizontal(LevelContainer.PLAYER_1, platform)
+				) {
+					correctedY = limitY;
+					LevelContainer.PLAYER_1.speedY = 0;
+				}
+			}
+
+			limitY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height
+			if (LevelContainer.PLAYER_1.y >= limitY) {
+				correctedY = limitY;
+			}
+			if (correctedY != null) {
+				LevelContainer.PLAYER_1.y = correctedY;
+				LevelContainer.PLAYER_1.canJump = true;
+				LevelContainer.PLAYER_1.speedY = 0;
+			} else {
+				LevelContainer.PLAYER_1.canJump = false;
+				LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
+			}
+			
+		} else if (LevelContainer.PLAYER_1.speedY < 0) {
+			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
+				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
+				limitY = platform.y + platform.height;
+				if (
+					LevelContainer.PLAYER_1.y >= limitY &&
+					LevelContainer.PLAYER_1.y + LevelContainer.PLAYER_1.speedY < limitY &&
+					HitTest.horizontal(LevelContainer.PLAYER_1, platform)
+				) {
+					LevelContainer.PLAYER_1.y = limitY;
+					LevelContainer.PLAYER_1.speedY = 0;
+				}
+			};
+			if (LevelContainer.PLAYER_1.speedY !== 0) {
+				LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
+			}
 		}
 
-		if (this.BUTTON_RIGHT == true) {										//******BUTTON_RIGHT
-			LevelContainer.PLAYER_1.x += 1;
+		//******BUTTON_UP
+		if (this.BUTTON_UP == true && LevelContainer.PLAYER_1.canJump) {
+			LevelContainer.PLAYER_1.canJump = false;
+			LevelContainer.PLAYER_1.speedY = LevelContainer.PLAYER_1.jumpSpeed;
 		}
 
-		if (this.BUTTON_LEFT == true) {											//******BUTTON_LEFT
-			LevelContainer.PLAYER_1.x -= 1;
+		//******BUTTON_RIGHT
+		if (this.BUTTON_RIGHT == true) {
+			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
+				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
+				limitX = platform.x - LevelContainer.PLAYER_1.width;
+				if (
+					LevelContainer.PLAYER_1.x <= limitX &&
+					LevelContainer.PLAYER_1.x + LevelContainer.PLAYER_1.movingSpeed > limitX &&
+					HitTest.vertical(LevelContainer.PLAYER_1, platform)
+				) {
+					LevelContainer.PLAYER_1.x = limitX;
+					canMove = false;
+				}
+			};
+			if (canMove) {
+				LevelContainer.PLAYER_1.x += LevelContainer.PLAYER_1.movingSpeed;
+			}
+			if (Player.PLAYER_SPRITE.scale.x < 0) {
+				Player.PLAYER_SPRITE.scale.x = 1;
+				Player.PLAYER_SPRITE.x -= Player.PLAYER_SPRITE.width;
+			}
+		}
+
+		//******BUTTON_LEFT
+		if (this.BUTTON_LEFT == true) {
+			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
+				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
+				limitX = platform.x + platform.width;
+				if (
+					LevelContainer.PLAYER_1.x >= limitX &&
+					LevelContainer.PLAYER_1.x - LevelContainer.PLAYER_1.movingSpeed < limitX &&
+					HitTest.vertical(LevelContainer.PLAYER_1, platform)
+				) {
+					LevelContainer.PLAYER_1.x = limitX;
+					canMove = false;
+				}
+			};
+			if (canMove) {
+				LevelContainer.PLAYER_1.x -= LevelContainer.PLAYER_1.movingSpeed;
+			}
+			if (Player.PLAYER_SPRITE.scale.x > 0) {
+				Player.PLAYER_SPRITE.scale.x = -1;
+				Player.PLAYER_SPRITE.x += Player.PLAYER_SPRITE.width;
+			}
 		} 
 	}
 }
