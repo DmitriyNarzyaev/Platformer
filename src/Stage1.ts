@@ -18,16 +18,20 @@ export default class Stage1 extends Container {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					const json:ILevel = xhr.response;
-                    let blockImage:string = json.blocks[0].type;
-                    let blockX:number = this._blockSize * json.blocks[0].x;
-                    let blockY:number = this._blockSize * json.blocks[0].y;
-                    let blockWidth:number = this._blockSize * json.blocks[0].width;
-					let blockHeight:number = this._blockSize * json.blocks[0].height;
-                    let platform:Platform = new Platform(blockImage, blockWidth, blockHeight);
-					this.addChild(platform);
-					platform.x = blockX
-					platform.y = blockY
-					LevelContainer.PLATFORM_ARRAY.push(platform);
+					for (let iterator:number = 0; iterator < json.blocks.length; iterator++)
+					{
+						let blockImage:string = json.blocks[iterator].type;
+						let blockX:number = this._blockSize * json.blocks[iterator].x;
+						let blockY:number = json.blocks[iterator].y;
+						let blockWidth:number = this._blockSize * json.blocks[iterator].width;
+						let blockHeight:number = this._blockSize * json.blocks[iterator].height;
+
+						let platform:Platform = new Platform(blockImage, blockWidth, blockHeight);
+						this.addChild(platform);
+						platform.x = blockX
+						platform.y = blockY
+						LevelContainer.PLATFORM_ARRAY.push(platform);
+					}
 				} else {
 					console.log("ERROR");
 				}

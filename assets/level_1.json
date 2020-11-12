@@ -6,6 +6,13 @@
 			"y":0,
 			"width":1,
 			"height":30
+		},
+		{
+			"type":"brick_block",
+			"x":79,
+			"y":0,
+			"width":1,
+			"height":30
 		}
 	]
 }
