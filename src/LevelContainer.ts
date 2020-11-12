@@ -5,6 +5,7 @@ import { Platform } from "./Platform";
 import { Main } from "./Main";
 import Stage1 from "./Stage1";
 import HitTest from "./Hit_Test";
+import Main_Container from "./Main_Container";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 4000;
@@ -15,7 +16,8 @@ export default class LevelContainer extends Container {
 	private BUTTON_RIGHT:boolean = false;
 	private BUTTON_UP:boolean = false;	
 	private _stage1:Stage1
-	public static PLATFORM_ARRAY:Platform[] = [];						
+	public static PLATFORM_ARRAY:Platform[] = [];
+	private _gap:number = 10;
 
 	constructor() {
 		super();
@@ -47,8 +49,8 @@ export default class LevelContainer extends Container {
     private initPlayer():void {
 		LevelContainer.PLAYER_1 = new Player();
 		this.addChild(LevelContainer.PLAYER_1);
-		LevelContainer.PLAYER_1.x = 100;
-		LevelContainer.PLAYER_1.y = 100;
+		LevelContainer.PLAYER_1.x = LevelContainer.PLAYER_1.width + this._gap;
+		LevelContainer.PLAYER_1.y = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap;
 	}
 	
 	//создание наполнения уровня
