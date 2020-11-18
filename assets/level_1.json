@@ -13,6 +13,32 @@
 			"y":0,
 			"width":1,
 			"height":30
+		},
+		{
+			"type":"brick_block",
+			"x":7,
+			"y":26,
+			"width":2,
+			"height":4
+		},
+		{
+			"type":"brick_block",
+			"x":14,
+			"y":24,
+			"width":2,
+			"height":6
+		},{
+			"type":"brick_block",
+			"x":22,
+			"y":26,
+			"width":4,
+			"height":1
+		},{
+			"type":"brick_block",
+			"x":28,
+			"y":22,
+			"width":1,
+			"height":1
 		}
 	]
 }

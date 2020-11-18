@@ -22,14 +22,15 @@ export default class Stage1 extends Container {
 					{
 						let blockImage:string = json.blocks[iterator].type;
 						let blockX:number = this._blockSize * json.blocks[iterator].x;
-						let blockY:number = json.blocks[iterator].y;
+						let blockY:number = this._blockSize * json.blocks[iterator].y;
 						let blockWidth:number = this._blockSize * json.blocks[iterator].width;
 						let blockHeight:number = this._blockSize * json.blocks[iterator].height;
 
 						let platform:Platform = new Platform(blockImage, blockWidth, blockHeight);
 						this.addChild(platform);
-						platform.x = blockX
-						platform.y = blockY
+						platform.x = blockX;
+						platform.y = blockY;
+
 						LevelContainer.PLATFORM_ARRAY.push(platform);
 					}
 				} else {

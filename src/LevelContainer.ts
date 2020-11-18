@@ -8,7 +8,7 @@ import HitTest from "./Hit_Test";
 import Main_Container from "./Main_Container";
 
 export default class LevelContainer extends Container {
-	public static readonly WIDTH:number = 4000;
+	public static readonly WIDTH:number = 3000;
     public static readonly HEIGHT:number = 1500;
     public static PLAYER_1:Player;
     private _background:TilingSprite;
