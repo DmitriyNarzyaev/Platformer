@@ -1,6 +1,7 @@
 import { Container, NineSlicePlane, Texture } from "pixi.js";
 
 export class Platform extends Container{
+	public damage:boolean = false;
 
 	constructor(texture:string, platformWidth:number, platformHeight:number) {
         super();

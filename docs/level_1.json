@@ -2,6 +2,7 @@
 	"blocks":[
 		{
 			"type":"brick_block",
+			"damage": "false",
 			"x":0,
 			"y":0,
 			"width":1,
@@ -9,35 +10,51 @@
 		},
 		{
 			"type":"brick_block",
+			"damage": "false",
 			"x":79,
 			"y":0,
 			"width":1,
 			"height":30
 		},
+
 		{
 			"type":"brick_block",
-			"x":7,
-			"y":26,
-			"width":2,
-			"height":4
+			"damage": "false",
+			"x":1,
+			"y":29,
+			"width":8,
+			"height":1
 		},
 		{
 			"type":"brick_block",
-			"x":14,
-			"y":24,
+			"damage": "false",
+			"x":9,
+			"y":25,
 			"width":2,
-			"height":6
+			"height":5
 		},{
 			"type":"brick_block",
-			"x":22,
-			"y":26,
+			"damage": "false",
+			"x":17,
+			"y":25,
 			"width":4,
-			"height":1
+			"height":5
 		},{
 			"type":"brick_block",
+			"damage": "false",
 			"x":28,
 			"y":22,
 			"width":1,
+			"height":1
+		},
+
+
+		{
+			"type":"lava_block",
+			"damage": "true",
+			"x":11,
+			"y":29,
+			"width":6,
 			"height":1
 		}
 	]

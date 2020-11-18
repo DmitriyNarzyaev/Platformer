@@ -18,6 +18,8 @@ export default class LevelContainer extends Container {
 	private _stage1:Stage1
 	public static PLATFORM_ARRAY:Platform[] = [];
 	private _gap:number = 10;
+	private _playerStartX:number;
+	private _playerStartY:number;
 
 	constructor() {
 		super();
@@ -49,8 +51,10 @@ export default class LevelContainer extends Container {
     private initPlayer():void {
 		LevelContainer.PLAYER_1 = new Player();
 		this.addChild(LevelContainer.PLAYER_1);
-		LevelContainer.PLAYER_1.x = LevelContainer.PLAYER_1.width + this._gap;
-		LevelContainer.PLAYER_1.y = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap;
+		this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
+		this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
+		LevelContainer.PLAYER_1.x = this._playerStartX;
+		LevelContainer.PLAYER_1.y = this._playerStartY;
 	}
 	
 	//создание наполнения уровня
@@ -89,9 +93,12 @@ export default class LevelContainer extends Container {
 		let limitX:number;
 		let limitY:number;
 		let canMove:boolean = true;
+		let isDamaged: boolean = false;
 		LevelContainer.PLAYER_1.speedY += LevelContainer.PLAYER_1.gravity;
+
 		if (LevelContainer.PLAYER_1.speedY > 0) {
 			let correctedY:number = null;
+
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
 				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
 				limitY = platform.y - LevelContainer.PLAYER_1.height;
@@ -100,24 +107,31 @@ export default class LevelContainer extends Container {
 					LevelContainer.PLAYER_1.y + LevelContainer.PLAYER_1.speedY > limitY &&
 					HitTest.horizontal(LevelContainer.PLAYER_1, platform)
 				) {
-					correctedY = limitY;
-					LevelContainer.PLAYER_1.speedY = 0;
+					if (platform.damage == false) {
+						correctedY = limitY;
+						LevelContainer.PLAYER_1.speedY = 0;
+					} else {
+						isDamaged = true;
+						break;
+					}
 				}
 			}
 
-			limitY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height
-			if (LevelContainer.PLAYER_1.y >= limitY) {
-				correctedY = limitY;
+			if (!isDamaged) {
+				limitY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height		// TODO;
+				if (LevelContainer.PLAYER_1.y >= limitY) {
+					correctedY = limitY;
+				}
+	
+				if (correctedY != null) {
+					LevelContainer.PLAYER_1.y = correctedY;
+					LevelContainer.PLAYER_1.canJump = true;
+					LevelContainer.PLAYER_1.speedY = 0;
+				} else {
+					LevelContainer.PLAYER_1.canJump = false;
+					LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
+				}
 			}
-			if (correctedY != null) {
-				LevelContainer.PLAYER_1.y = correctedY;
-				LevelContainer.PLAYER_1.canJump = true;
-				LevelContainer.PLAYER_1.speedY = 0;
-			} else {
-				LevelContainer.PLAYER_1.canJump = false;
-				LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
-			}
-			
 		} else if (LevelContainer.PLAYER_1.speedY < 0) {
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
 				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
@@ -127,21 +141,24 @@ export default class LevelContainer extends Container {
 					LevelContainer.PLAYER_1.y + LevelContainer.PLAYER_1.speedY < limitY &&
 					HitTest.horizontal(LevelContainer.PLAYER_1, platform)
 				) {
-					LevelContainer.PLAYER_1.y = limitY;
-					LevelContainer.PLAYER_1.speedY = 0;
+					if (platform.damage == false) {
+						LevelContainer.PLAYER_1.y = limitY;
+						LevelContainer.PLAYER_1.speedY = 0;
+					} else {
+						isDamaged = true;
+						break;
+					}
 				}
 			};
 			if (LevelContainer.PLAYER_1.speedY !== 0) {
 				LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
 			}
 		}
-
 		//******BUTTON_UP
 		if (this.BUTTON_UP == true && LevelContainer.PLAYER_1.canJump) {
 			LevelContainer.PLAYER_1.canJump = false;
 			LevelContainer.PLAYER_1.speedY = LevelContainer.PLAYER_1.jumpSpeed;
 		}
-
 		//******BUTTON_RIGHT
 		if (this.BUTTON_RIGHT == true) {
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
@@ -152,8 +169,13 @@ export default class LevelContainer extends Container {
 					LevelContainer.PLAYER_1.x + LevelContainer.PLAYER_1.movingSpeed > limitX &&
 					HitTest.vertical(LevelContainer.PLAYER_1, platform)
 				) {
-					LevelContainer.PLAYER_1.x = limitX;
-					canMove = false;
+					if (platform.damage == false) {
+						LevelContainer.PLAYER_1.x = limitX;
+						canMove = false;
+					} else {
+						isDamaged = true;
+						break;
+					}
 				}
 			};
 			if (canMove) {
@@ -175,8 +197,13 @@ export default class LevelContainer extends Container {
 					LevelContainer.PLAYER_1.x - LevelContainer.PLAYER_1.movingSpeed < limitX &&
 					HitTest.vertical(LevelContainer.PLAYER_1, platform)
 				) {
-					LevelContainer.PLAYER_1.x = limitX;
-					canMove = false;
+					if (platform.damage == false) {
+						LevelContainer.PLAYER_1.x = limitX;
+						canMove = false;
+					} else {
+						isDamaged = true;
+						break;
+					}
 				}
 			};
 			if (canMove) {
@@ -186,6 +213,12 @@ export default class LevelContainer extends Container {
 				Player.PLAYER_SPRITE.scale.x = -1;
 				Player.PLAYER_SPRITE.x += Player.PLAYER_SPRITE.width;
 			}
-		} 
+		}
+		if (isDamaged) {
+			LevelContainer.PLAYER_1.x = this._playerStartX;
+			LevelContainer.PLAYER_1.y = this._playerStartY;
+			LevelContainer.PLAYER_1.speedY = 0;
+
+		}
 	}
 }

@@ -21,6 +21,7 @@ export default class Stage1 extends Container {
 					for (let iterator:number = 0; iterator < json.blocks.length; iterator++)
 					{
 						let blockImage:string = json.blocks[iterator].type;
+						let blockDamage:string = json.blocks[iterator].damage;
 						let blockX:number = this._blockSize * json.blocks[iterator].x;
 						let blockY:number = this._blockSize * json.blocks[iterator].y;
 						let blockWidth:number = this._blockSize * json.blocks[iterator].width;
@@ -30,7 +31,11 @@ export default class Stage1 extends Container {
 						this.addChild(platform);
 						platform.x = blockX;
 						platform.y = blockY;
-
+						if (blockDamage == "false") {
+							platform.damage = false;
+						} else if (blockDamage == "true") {
+							platform.damage = true;
+						}
 						LevelContainer.PLATFORM_ARRAY.push(platform);
 					}
 				} else {

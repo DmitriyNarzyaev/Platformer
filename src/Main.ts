@@ -21,6 +21,7 @@ export class Main extends Container {
 		loader.add("background", "bg.png");
 		loader.add("player", "player.png");
 		loader.add("brick_block", "brick_block.jpg");
+		loader.add("lava_block", "lava_block.jpg");
 		loader.on("complete", ()=> {
 			this.initMainContainer();
 			window.onresize = () => { this.resize(); };
