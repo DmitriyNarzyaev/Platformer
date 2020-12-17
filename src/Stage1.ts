@@ -1,4 +1,4 @@
-import Container = PIXI.Container;
+import { Container, Sprite } from "pixi.js";
 import { Platform } from "./Platform";
 import LevelContainer from "./LevelContainer";
 
@@ -22,12 +22,13 @@ export default class Stage1 extends Container {
 					{
 						let blockImage:string = json.blocks[iterator].type;
 						let blockDamage:string = json.blocks[iterator].damage;
+						let nineSlice:string = json.blocks[iterator].nineSlice;
 						let blockX:number = this._blockSize * json.blocks[iterator].x;
 						let blockY:number = this._blockSize * json.blocks[iterator].y;
 						let blockWidth:number = this._blockSize * json.blocks[iterator].width;
 						let blockHeight:number = this._blockSize * json.blocks[iterator].height;
 
-						let platform:Platform = new Platform(blockImage, blockWidth, blockHeight);
+						let platform:Platform = new Platform(blockImage, nineSlice, blockWidth, blockHeight);
 						this.addChild(platform);
 						platform.x = blockX;
 						platform.y = blockY;
@@ -54,6 +55,7 @@ interface ILevel {
 interface IBlock {
 	type:string;
 	damage:string;
+	nineSlice:string;
 	x:number;
 	y:number;
 	width:number;

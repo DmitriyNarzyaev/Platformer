@@ -51,8 +51,12 @@ export default class LevelContainer extends Container {
     private initPlayer():void {
 		LevelContainer.PLAYER_1 = new Player();
 		this.addChild(LevelContainer.PLAYER_1);
-		this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
-		this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
+			//this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
+			//this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
+
+			this._playerStartX = 500;			//test
+			this._playerStartY = 200;			//test
+
 		LevelContainer.PLAYER_1.x = this._playerStartX;
 		LevelContainer.PLAYER_1.y = this._playerStartY;
 	}
@@ -94,11 +98,10 @@ export default class LevelContainer extends Container {
 		let limitY:number;
 		let canMove:boolean = true;
 		let isDamaged: boolean = false;
-		LevelContainer.PLAYER_1.speedY += LevelContainer.PLAYER_1.gravity;
 
+		LevelContainer.PLAYER_1.speedY += LevelContainer.PLAYER_1.gravity;
 		if (LevelContainer.PLAYER_1.speedY > 0) {
 			let correctedY:number = null;
-
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
 				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
 				limitY = platform.y - LevelContainer.PLAYER_1.height;
@@ -132,6 +135,7 @@ export default class LevelContainer extends Container {
 					LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
 				}
 			}
+
 		} else if (LevelContainer.PLAYER_1.speedY < 0) {
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
 				let platform:Platform = LevelContainer.PLATFORM_ARRAY[iterator];
@@ -154,11 +158,13 @@ export default class LevelContainer extends Container {
 				LevelContainer.PLAYER_1.y += LevelContainer.PLAYER_1.speedY;
 			}
 		}
+
 		//******BUTTON_UP
 		if (this.BUTTON_UP == true && LevelContainer.PLAYER_1.canJump) {
 			LevelContainer.PLAYER_1.canJump = false;
 			LevelContainer.PLAYER_1.speedY = LevelContainer.PLAYER_1.jumpSpeed;
 		}
+
 		//******BUTTON_RIGHT
 		if (this.BUTTON_RIGHT == true) {
 			for (let iterator:number = 0; iterator < LevelContainer.PLATFORM_ARRAY.length; iterator ++) {
