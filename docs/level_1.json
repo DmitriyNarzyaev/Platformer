@@ -171,7 +171,7 @@
 			"x":24,
 			"y":16,
 			"width":1,
-			"height":5
+			"height":6
 		},{
 			"type":"brick_block",
 			"damage": "false",
@@ -179,7 +179,7 @@
 			"x":20,
 			"y":16,
 			"width":1,
-			"height":5
+			"height":6
 		},{
 			"type":"brick_block",
 			"damage": "false",
@@ -281,7 +281,7 @@
 			"damage": "true",
 			"nineSlice": "false",
 			"x":24,
-			"y":21,
+			"y":22,
 			"width":1,
 			"height":1
 		},
@@ -290,7 +290,7 @@
 			"damage": "true",
 			"nineSlice": "false",
 			"x":24,
-			"y":22,
+			"y":23,
 			"width":1,
 			"height":1
 		},

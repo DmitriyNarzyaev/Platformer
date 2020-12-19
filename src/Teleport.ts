@@ -14,6 +14,6 @@ export class Teleport extends Container {
 		Teleport.TELEPORT_SPRITE = Sprite.from("teleport");
         Teleport.TELEPORT_CONTAINER.addChild(Teleport.TELEPORT_SPRITE);
         Teleport.TELEPORT_SPRITE.x -= Teleport.TELEPORT_SPRITE.width/2;
-        Teleport.TELEPORT_SPRITE.y -= Teleport.TELEPORT_SPRITE.height/2;
+		Teleport.TELEPORT_SPRITE.y -= Teleport.TELEPORT_SPRITE.height/2;
     }
 }

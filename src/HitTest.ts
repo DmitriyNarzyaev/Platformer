@@ -1,3 +1,4 @@
+import { Console } from "console";
 import { Container } from "pixi.js";
 
 export default class HitTest {
@@ -17,6 +18,7 @@ export default class HitTest {
 		const obj1Bottom:number = obj1.y + obj1.height;
 		const obj2Top:number = obj2.y;
 		const obj2Bottom:number = obj2.y + obj2.height;
+		console.log(obj2.getBounds().x);
 		return !(
 			obj1Bottom <= obj2Top ||
 			obj1Top >= obj2Bottom

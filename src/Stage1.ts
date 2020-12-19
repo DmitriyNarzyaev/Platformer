@@ -10,7 +10,7 @@ export default class Stage1 extends Container {
         this.stageLoader();
 	}
 
-    private stageLoader():void {
+    private stageLoader():void {				//FIXME: перенести в main
 		const xhr:XMLHttpRequest = new XMLHttpRequest();
 		xhr.responseType = "json";
 		xhr.open("GET", "level_1.json", true);
@@ -18,8 +18,7 @@ export default class Stage1 extends Container {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					const json:ILevel = xhr.response;
-					for (let iterator:number = 0; iterator < json.blocks.length; iterator++)
-					{
+					for (let iterator:number = 0; iterator < json.blocks.length; iterator++) {
 						let blockImage:string = json.blocks[iterator].type;
 						let blockDamage:string = json.blocks[iterator].damage;
 						let nineSlice:string = json.blocks[iterator].nineSlice;

@@ -4,10 +4,8 @@ import { Player } from "./Player";
 import { Platform } from "./Platform";
 import { Main } from "./Main";
 import Stage1 from "./Stage1";
-import HitTest from "./Hit_Test";
-import Main_Container from "./Main_Container";
+import HitTest from "./HitTest";
 import { Teleport } from "./Teleport";
-import { Console } from "console";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 3000;
@@ -58,7 +56,7 @@ export default class LevelContainer extends Container {
 			//this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
 			//this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
 
-			this._playerStartX = 500;			//test
+			this._playerStartX = 2200;			//test
 			this._playerStartY = 200;			//test
 
 		LevelContainer.PLAYER_1.x = this._playerStartX;
@@ -235,10 +233,13 @@ export default class LevelContainer extends Container {
 			}
 		}
 
-		//FIXME
+		// Создание телепорта
 		Teleport.TELEPORT_CONTAINER.rotation += LevelContainer.TELEPORT_1.rotationSpeed;
 		LevelContainer.TELEPORT_1.scale.x = .2;
-		if (HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1)) {
+		if (
+			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1) &&
+			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1)
+		) {
 			console.log("ENDGAME");
 		} 
 
