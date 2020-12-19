@@ -22,7 +22,6 @@ export class Platform extends Container{
 			this.addChild(block);
 			block.width = 50;
 			block.height = 50;
-		}
-        
+		} 
     }
 }

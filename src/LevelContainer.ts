@@ -6,11 +6,14 @@ import { Main } from "./Main";
 import Stage1 from "./Stage1";
 import HitTest from "./Hit_Test";
 import Main_Container from "./Main_Container";
+import { Teleport } from "./Teleport";
+import { Console } from "console";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 3000;
     public static readonly HEIGHT:number = 1500;
-    public static PLAYER_1:Player;
+	public static PLAYER_1:Player;
+	public static TELEPORT_1:Teleport;
     private _background:TilingSprite;
     private BUTTON_LEFT:boolean = false;
 	private BUTTON_RIGHT:boolean = false;
@@ -37,6 +40,7 @@ export default class LevelContainer extends Container {
 
         this.initBackground();
 		this.initPlayer();
+		this.initTeleport();
 		this.initStage1();
 	}
 
@@ -59,6 +63,16 @@ export default class LevelContainer extends Container {
 
 		LevelContainer.PLAYER_1.x = this._playerStartX;
 		LevelContainer.PLAYER_1.y = this._playerStartY;
+	}
+
+	//Создание телепорта
+	private initTeleport():void {
+		LevelContainer.TELEPORT_1 = new Teleport();
+		this.addChild(LevelContainer.TELEPORT_1);
+		LevelContainer.TELEPORT_1.x = 2850;
+		LevelContainer.TELEPORT_1.y = 300;
+		LevelContainer.TELEPORT_1.width /= 2;
+		LevelContainer.TELEPORT_1.height /= 2;
 	}
 	
 	//создание наполнения уровня
@@ -220,11 +234,18 @@ export default class LevelContainer extends Container {
 				Player.PLAYER_SPRITE.x += Player.PLAYER_SPRITE.width;
 			}
 		}
+
+		//FIXME
+		Teleport.TELEPORT_CONTAINER.rotation += LevelContainer.TELEPORT_1.rotationSpeed;
+		LevelContainer.TELEPORT_1.scale.x = .2;
+		if (HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1)) {
+			console.log("ENDGAME");
+		} 
+
 		if (isDamaged) {
 			LevelContainer.PLAYER_1.x = this._playerStartX;
 			LevelContainer.PLAYER_1.y = this._playerStartY;
 			LevelContainer.PLAYER_1.speedY = 0;
-
 		}
 	}
 }
