@@ -2,10 +2,10 @@ import Container = PIXI.Container;
 import { Texture, TilingSprite } from "pixi.js";
 import { Player } from "./Player";
 import { Platform } from "./Platform";
-import { Main } from "./Main";
 import Stage1 from "./Stage1";
 import HitTest from "./HitTest";
 import { Teleport } from "./Teleport";
+import Global from "./Global";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 3000;
@@ -25,7 +25,7 @@ export default class LevelContainer extends Container {
 	constructor() {
 		super();
 		
-        Main.pixiApp.ticker.add(this.ticker, this);
+        Global.PIXI_APP.ticker.add(this.ticker, this);
         
         window.addEventListener("keydown",
 			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
@@ -236,6 +236,7 @@ export default class LevelContainer extends Container {
 		// Создание телепорта
 		Teleport.TELEPORT_CONTAINER.rotation += LevelContainer.TELEPORT_1.rotationSpeed;
 		LevelContainer.TELEPORT_1.scale.x = .2;
+
 		if (
 			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1) &&
 			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1)

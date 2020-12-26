@@ -3,17 +3,20 @@ import Application = PIXI.Application;
 import Container = PIXI.Container;
 import MainContainer from "./Main_Container";
 import { Loader } from "pixi.js";
+import Global from "./Global";
 
 export class Main extends Container {
-	public static pixiApp:Application;
 	private _size:Rectangle;
 	private _mainContainer:MainContainer;
+	private _loaderIterator:number = 0;
+	public static xhr:XMLHttpRequest;
 
 	constructor(canvasId:string) {
 		super();
 		this.initSize();
 		this.initPixiApp(canvasId);
 		this.initImages();
+		this.initStage();
 	}
 
 	private initImages():void {
@@ -25,11 +28,36 @@ export class Main extends Container {
 		loader.add("thorns", "thorns.png");
 		loader.add("teleport", "teleport.png");
 		loader.on("complete", ()=> {
+			this._loaderIterator += 1;
+			this.startStage();
+		});
+		loader.load();
+	}
+
+	private initStage():void {
+		// const blockSize:number = 50;
+		Main.xhr = new XMLHttpRequest();
+		Main.xhr.responseType = "json";
+		Main.xhr.open("GET", "level_1.json", true);
+		Main.xhr.onreadystatechange = () => {
+			if (Main.xhr.readyState === 4) {
+				if (Main.xhr.status === 200) {
+					this._loaderIterator += 1;
+					this.startStage();
+				} else {
+					console.log("ERROR");
+				}
+			}
+		};
+		Main.xhr.send();
+	}
+	
+	private startStage():void {
+		if (this._loaderIterator == 2){
 			this.initMainContainer();
 			window.onresize = () => { this.resize(); };
 			this.resize();
-		});
-		loader.load();
+		}
 	}
 
 	private initSize():void {
@@ -37,20 +65,20 @@ export class Main extends Container {
 	}
 
 	private initPixiApp(canvasId:string):void {
-		Main.pixiApp = new Application({
+		Global.PIXI_APP = new Application({
 			backgroundColor: 0x000000,
 			view: document.getElementById(canvasId) as HTMLCanvasElement,
 			// needed to avoid troubles with invisible fonts on some Android devices
 			resolution: ((devicePixelRatio || 1) < 2) ? 1 : 2,
 		});
-		Main.pixiApp.stage.addChild(this);
+		Global.PIXI_APP.stage.addChild(this);
 	}
 
 	private initMainContainer():void {
 		this._mainContainer = new MainContainer();
 		this._mainContainer.width = window.innerWidth;
 		this._mainContainer.height = window.innerHeight;
-		Main.pixiApp.stage.addChild(this._mainContainer);
+		Global.PIXI_APP.stage.addChild(this._mainContainer);
 	}
 
 	private resize():void {
@@ -70,9 +98,9 @@ export class Main extends Container {
 	}
 
 	private alignPixiApp():void {
-		Main.pixiApp.renderer.view.style.width = this._size.width + "px";
-		Main.pixiApp.renderer.view.style.height = this._size.height + "px";
-		Main.pixiApp.renderer.resize(this._size.width, this._size.height);
+		Global.PIXI_APP.renderer.view.style.width = this._size.width + "px";
+		Global.PIXI_APP.renderer.view.style.height = this._size.height + "px";
+		Global.PIXI_APP.renderer.resize(this._size.width, this._size.height);
 	}
 
 	private alignContainer():void {

@@ -1,7 +1,7 @@
 import Container = PIXI.Container;
 import { Graphics } from "pixi.js";
 import LevelContainer from "./LevelContainer";
-import { Main } from "./Main";
+import Global from "./Global";
 
 export default class Main_Container extends Container {
 	public static readonly WIDTH:number = 1600;
@@ -11,7 +11,7 @@ export default class Main_Container extends Container {
 	constructor() {
 		super();
 
-		Main.pixiApp.ticker.add(this.ticker, this);
+		Global.PIXI_APP.ticker.add(this.ticker, this);
 
 		this.initialMask();
 		this._levelContainer = new LevelContainer;
