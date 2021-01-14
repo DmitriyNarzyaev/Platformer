@@ -53,12 +53,8 @@ export default class LevelContainer extends Container {
     private initPlayer():void {
 		LevelContainer.PLAYER_1 = new Player();
 		this.addChild(LevelContainer.PLAYER_1);
-			//this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
-			//this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
-
-			this._playerStartX = 2200;			//test
-			this._playerStartY = 200;			//test
-
+			this._playerStartX = LevelContainer.PLAYER_1.width + this._gap;
+			this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
 		LevelContainer.PLAYER_1.x = this._playerStartX;
 		LevelContainer.PLAYER_1.y = this._playerStartY;
 	}

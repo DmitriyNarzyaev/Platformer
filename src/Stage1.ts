@@ -1,4 +1,4 @@
-import { Container, Sprite } from "pixi.js";
+import { Container } from "pixi.js";
 import { Platform } from "./Platform";
 import LevelContainer from "./LevelContainer";
 import { Main } from "./Main";

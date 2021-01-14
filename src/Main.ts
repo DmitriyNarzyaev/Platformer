@@ -21,6 +21,7 @@ export class Main extends Container {
 
 	private initImages():void {
         const loader:Loader = new Loader();
+		loader.add("title", "title.jpg");
 		loader.add("background", "bg.png");
 		loader.add("player", "player.png");
 		loader.add("brick_block", "brick_block.jpg");
@@ -29,13 +30,12 @@ export class Main extends Container {
 		loader.add("teleport", "teleport.png");
 		loader.on("complete", ()=> {
 			this._loaderIterator += 1;
-			this.startStage();
+			this.initialComplite();
 		});
 		loader.load();
 	}
 
 	private initStage():void {
-		// const blockSize:number = 50;
 		Main.xhr = new XMLHttpRequest();
 		Main.xhr.responseType = "json";
 		Main.xhr.open("GET", "level_1.json", true);
@@ -43,7 +43,7 @@ export class Main extends Container {
 			if (Main.xhr.readyState === 4) {
 				if (Main.xhr.status === 200) {
 					this._loaderIterator += 1;
-					this.startStage();
+					this.initialComplite();
 				} else {
 					console.log("ERROR");
 				}
@@ -51,8 +51,8 @@ export class Main extends Container {
 		};
 		Main.xhr.send();
 	}
-	
-	private startStage():void {
+
+	private initialComplite():void {
 		if (this._loaderIterator == 2){
 			this.initMainContainer();
 			window.onresize = () => { this.resize(); };

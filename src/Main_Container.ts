@@ -10,7 +10,6 @@ export default class Main_Container extends Container {
 
 	constructor() {
 		super();
-
 		Global.PIXI_APP.ticker.add(this.ticker, this);
 
 		this.initialMask();
