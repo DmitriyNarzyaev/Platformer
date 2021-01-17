@@ -2,16 +2,39 @@ import Container = PIXI.Container;
 import { Graphics } from "pixi.js";
 import LevelContainer from "./LevelContainer";
 import Global from "./Global";
+import { Title } from "./Title";
+import Button from "./Button";
 
 export default class Main_Container extends Container {
 	public static readonly WIDTH:number = 1600;
 	public static readonly HEIGHT:number = 800;
 	private _levelContainer:LevelContainer;
+	private _title:Title;
+	private _button:Button;
 
 	constructor() {
 		super();
-		Global.PIXI_APP.ticker.add(this.ticker, this);
 
+		this.initialTitle();
+
+	}
+
+	private initialTitle():void {
+		this._title = new Title();
+		this.addChild(this._title);
+
+
+		this._button = new Button("START", () => {this.initialGame();});
+		this.addChild(this._button);
+		this._button.x = (Main_Container.WIDTH - this._button.width)/2;
+		this._button.y = Main_Container.HEIGHT - this._button.height*2;
+	}
+
+	private initialGame():void {
+		this.removeChild(this._title);
+		this.removeChild(this._button);
+
+		Global.PIXI_APP.ticker.add(this.ticker, this);
 		this.initialMask();
 		this._levelContainer = new LevelContainer;
 		this.addChild(this._levelContainer);
