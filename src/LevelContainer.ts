@@ -63,8 +63,10 @@ export default class LevelContainer extends Container {
 	private initTeleport():void {
 		LevelContainer.TELEPORT_1 = new Teleport();
 		this.addChild(LevelContainer.TELEPORT_1);
-		LevelContainer.TELEPORT_1.x = 2850;
-		LevelContainer.TELEPORT_1.y = 300;
+		//LevelContainer.TELEPORT_1.x = 2850;
+		//LevelContainer.TELEPORT_1.y = 300;
+			LevelContainer.TELEPORT_1.x = 400;
+			LevelContainer.TELEPORT_1.y = 1200;
 		LevelContainer.TELEPORT_1.width /= 2;
 		LevelContainer.TELEPORT_1.height /= 2;
 	}
@@ -229,7 +231,7 @@ export default class LevelContainer extends Container {
 			}
 		}
 
-		// Создание телепорта
+		// Телепорта
 		Teleport.TELEPORT_CONTAINER.rotation += LevelContainer.TELEPORT_1.rotationSpeed;
 		LevelContainer.TELEPORT_1.scale.x = .2;
 

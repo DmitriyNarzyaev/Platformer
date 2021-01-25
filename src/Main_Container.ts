@@ -23,7 +23,6 @@ export default class Main_Container extends Container {
 		this._title = new Title();
 		this.addChild(this._title);
 
-
 		this._button = new Button("START", () => {this.initialGame();});
 		this.addChild(this._button);
 		this._button.x = (Main_Container.WIDTH - this._button.width)/2;
