@@ -24,22 +24,19 @@ export default class LevelContainer extends Container {
 
 	constructor() {
 		super();
-		
-        Global.PIXI_APP.ticker.add(this.ticker, this);
-        
-        window.addEventListener("keydown",
-			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
-				this.keyDownHandler(e);
-		},);
-		window.addEventListener("keyup",
-			(e:KeyboardEvent) => {
-				this.keyUpHandler(e);
-		},);
-
         this.initBackground();
 		this.initPlayer();
 		this.initTeleport();
 		this.initStage1();
+		window.addEventListener("keydown",
+			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
+			this.keyDownHandler(e);
+		},);
+		window.addEventListener("keyup",
+			(e:KeyboardEvent) => {
+			this.keyUpHandler(e);
+		},);
+		Global.PIXI_APP.ticker.add(this.ticker, this);
 	}
 
     //создание заднего фона

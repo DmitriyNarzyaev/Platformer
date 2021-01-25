@@ -5,7 +5,7 @@ export class Title extends Container {
 	private _personagesNameText:PIXI.Text;
 
 	constructor() {
-        super();
+		super();
         this.initialTitleBackground();
         this.initTextWindow();
     }

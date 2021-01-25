@@ -33,7 +33,6 @@ export default class Stage1 extends Container {
 			LevelContainer.PLATFORM_ARRAY.push(platform);
 		}
 	}
-
 }
 
 interface ILevel {

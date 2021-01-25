@@ -9,7 +9,7 @@ export class Teleport extends Container {
 
 	constructor() {
 		super();
-
+		
 		Teleport.TELEPORT_CONTAINER = new PIXI.Container;
 		this.addChild(Teleport.TELEPORT_CONTAINER);
 		Teleport.TELEPORT_SPRITE = Sprite.from("teleport");

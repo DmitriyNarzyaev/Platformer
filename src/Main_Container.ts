@@ -14,9 +14,7 @@ export default class Main_Container extends Container {
 
 	constructor() {
 		super();
-
 		this.initialTitle();
-
 	}
 
 	private initialTitle():void {
