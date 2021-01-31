@@ -60,12 +60,12 @@ export default class LevelContainer extends Container {
 	private initTeleport():void {
 		LevelContainer.TELEPORT_1 = new Teleport();
 		this.addChild(LevelContainer.TELEPORT_1);
-		//LevelContainer.TELEPORT_1.x = 2850;
-		//LevelContainer.TELEPORT_1.y = 300;
-			LevelContainer.TELEPORT_1.x = 400;
-			LevelContainer.TELEPORT_1.y = 1200;
-		LevelContainer.TELEPORT_1.width /= 2;
-		LevelContainer.TELEPORT_1.height /= 2;
+		LevelContainer.TELEPORT_1.x = 2850;
+		LevelContainer.TELEPORT_1.y = 300;
+		LevelContainer.TELEPORT_1.width = LevelContainer.TELEPORT_1.teleportWidth;
+		LevelContainer.TELEPORT_1.height = LevelContainer.TELEPORT_1.teleportHeight;
+
+		console.log(LevelContainer.TELEPORT_1.hitbox.x + " *** " + LevelContainer.TELEPORT_1.hitbox.y);
 	}
 	
 	//создание наполнения уровня
@@ -228,16 +228,16 @@ export default class LevelContainer extends Container {
 			}
 		}
 
-		// Телепорта
+		// Телепорт
 		Teleport.TELEPORT_CONTAINER.rotation += LevelContainer.TELEPORT_1.rotationSpeed;
 		LevelContainer.TELEPORT_1.scale.x = .2;
 
 		if (
-			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1) &&
-			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1)
+			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox) &&
+			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox)
 		) {
 			console.log("ENDGAME");
-		} 
+		}
 
 		if (isDamaged) {
 			LevelContainer.PLAYER_1.x = this._playerStartX;

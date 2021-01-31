@@ -1,26 +1,36 @@
-import { Console } from "console";
-import { Container } from "pixi.js";
+import { Container, Graphics, IPoint, Point } from "pixi.js";
+import Global from "./Global";
 
 export default class HitTest {
 	public static horizontal(obj1:Container, obj2:Container):boolean {
-		const obj1Left:number = obj1.x;
-		const obj1Right:number = obj1.x + obj1.width;
-		const obj2Left:number = obj2.x;;
-		const obj2Right:number = obj2.x + obj2.width;;
+		if (!obj1.parent || !obj2.parent) {
+			return false;
+		}
+
+		const obj1TopLeftGlobal:IPoint = obj1.parent.toGlobal(obj1.position);
+		const obj2TopLeftGlobal:IPoint = obj2.parent.toGlobal(obj2.position);
+		const obj1BottomRightGlobal:IPoint = obj1.parent.toGlobal(new Point(obj1.x + obj1.width, obj1.y + obj1.height));
+		const obj2BottomRightGlobal:IPoint = obj2.parent.toGlobal(new Point(obj2.x + obj2.width, obj2.y + obj2.height));
+
 		return !(
-			obj1Right <= obj2Left ||
-			obj1Left >= obj2Right
+			obj1BottomRightGlobal.x <= obj2TopLeftGlobal.x ||
+			obj1TopLeftGlobal.x >= obj2BottomRightGlobal.x
 		);
 	}
 
 	public static vertical(obj1:Container, obj2:Container):boolean {
-		const obj1Top:number = obj1.y;
-		const obj1Bottom:number = obj1.y + obj1.height;
-		const obj2Top:number = obj2.y;
-		const obj2Bottom:number = obj2.y + obj2.height;
+		if (!obj1.parent || !obj2.parent) {
+			return false;
+		}
+
+		const obj1TopLeftGlobal:IPoint = obj1.parent.toGlobal(obj1.position);
+		const obj2TopLeftGlobal:IPoint = obj2.parent.toGlobal(obj2.position);
+		const obj1BottomRightGlobal:IPoint = obj1.parent.toGlobal(new Point(obj1.x + obj1.width, obj1.y + obj1.height));
+		const obj2BottomRightGlobal:IPoint = obj2.parent.toGlobal(new Point(obj2.x + obj2.width, obj2.y + obj2.height));
+
 		return !(
-			obj1Bottom <= obj2Top ||
-			obj1Top >= obj2Bottom
+			obj1BottomRightGlobal.y <= obj2TopLeftGlobal.y ||
+			obj1TopLeftGlobal.y >= obj2BottomRightGlobal.y
 		);
 	}
 }

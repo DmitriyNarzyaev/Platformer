@@ -33,7 +33,7 @@ export default class Main_Container extends Container {
 
 		Global.PIXI_APP.ticker.add(this.ticker, this);
 		this.initialMask();
-		this._levelContainer = new LevelContainer;
+		this._levelContainer = new LevelContainer();
 		this.addChild(this._levelContainer);
 	}
 
