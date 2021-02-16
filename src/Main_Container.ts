@@ -4,6 +4,7 @@ import LevelContainer from "./LevelContainer";
 import Global from "./Global";
 import { Title } from "./Title";
 import Button from "./Button";
+import Stage1 from "./Stage1";
 
 export default class Main_Container extends Container {
 	public static readonly WIDTH:number = 1600;
@@ -11,17 +12,18 @@ export default class Main_Container extends Container {
 	private _levelContainer:LevelContainer;
 	private _title:Title;
 	private _button:Button;
+	private _containerMask:PIXI.Graphics;
 
 	constructor() {
 		super();
-		this.initialTitle();
+		this.initialTitle("START");
 	}
 
-	private initialTitle():void {
+	private initialTitle(buttonName:string):void {
 		this._title = new Title();
 		this.addChild(this._title);
 
-		this._button = new Button("START", () => {this.initialGame();});
+		this._button = new Button(buttonName, () => {this.initialGame();});
 		this.addChild(this._button);
 		this._button.x = (Main_Container.WIDTH - this._button.width)/2;
 		this._button.y = Main_Container.HEIGHT - this._button.height*2;
@@ -32,17 +34,20 @@ export default class Main_Container extends Container {
 		this.removeChild(this._button);
 
 		Global.PIXI_APP.ticker.add(this.ticker, this);
-		this.initialMask();
+		//this.initialMask();
 		this._levelContainer = new LevelContainer();
 		this.addChild(this._levelContainer);
+
+		Global.STAGE = new Stage1;
+		this._levelContainer.addChild(Global.STAGE);
 	}
 
 	private initialMask():void {
-		let containerMask: Graphics = new Graphics;
-		containerMask.beginFill(0x00ff48);
-		containerMask.drawRect(0, 0, Main_Container.WIDTH, Main_Container.HEIGHT);
-		this.addChild(containerMask);
-		this.mask = containerMask;
+		this._containerMask = new Graphics;
+		this._containerMask.beginFill(0x00ff48);
+		this._containerMask.drawRect(0, 0, Main_Container.WIDTH, Main_Container.HEIGHT);
+		this.addChild(this._containerMask);
+		this.mask = this._containerMask;
 	}
 
 	private ticker():void {

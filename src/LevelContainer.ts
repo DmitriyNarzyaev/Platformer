@@ -2,10 +2,11 @@ import Container = PIXI.Container;
 import { Texture, TilingSprite } from "pixi.js";
 import { Player } from "./Player";
 import { Platform } from "./Platform";
-import Stage1 from "./Stage1";
 import HitTest from "./HitTest";
 import { Teleport } from "./Teleport";
 import Global from "./Global";
+import { Title } from "./Title";
+import Button from "./Button";
 
 export default class LevelContainer extends Container {
 	public static readonly WIDTH:number = 3000;
@@ -15,19 +16,20 @@ export default class LevelContainer extends Container {
     private _background:TilingSprite;
     private BUTTON_LEFT:boolean = false;
 	private BUTTON_RIGHT:boolean = false;
-	private BUTTON_UP:boolean = false;	
-	private _stage1:Stage1
+	private BUTTON_UP:boolean = false;
 	public static PLATFORM_ARRAY:Platform[] = [];
 	private _gap:number = 10;
 	private _playerStartX:number;
 	private _playerStartY:number;
+
+	public title:Title;
+	public button:Button;
 
 	constructor() {
 		super();
         this.initBackground();
 		this.initPlayer();
 		this.initTeleport();
-		this.initStage1();
 		window.addEventListener("keydown",
 			(e:KeyboardEvent) => {LevelContainer.PLAYER_1
 			this.keyDownHandler(e);
@@ -60,18 +62,12 @@ export default class LevelContainer extends Container {
 	private initTeleport():void {
 		LevelContainer.TELEPORT_1 = new Teleport();
 		this.addChild(LevelContainer.TELEPORT_1);
-		LevelContainer.TELEPORT_1.x = 2850;
-		LevelContainer.TELEPORT_1.y = 300;
+		LevelContainer.TELEPORT_1.x = 400; //2850;
+		LevelContainer.TELEPORT_1.y = 1200; //300;
 		LevelContainer.TELEPORT_1.width = LevelContainer.TELEPORT_1.teleportWidth;
 		LevelContainer.TELEPORT_1.height = LevelContainer.TELEPORT_1.teleportHeight;
-
-		console.log(LevelContainer.TELEPORT_1.hitbox.x + " *** " + LevelContainer.TELEPORT_1.hitbox.y);
-	}
-	
-	//создание наполнения уровня
-	private initStage1():void {
-		this._stage1 = new Stage1();
-		this.addChild(this._stage1);
+		LevelContainer.TELEPORT_1.hitbox.x -= LevelContainer.TELEPORT_1.teleportWidth/2;
+		LevelContainer.TELEPORT_1.hitbox.y -= LevelContainer.TELEPORT_1.teleportHeight/2;
 	}
 	
 	//Нажатие кнопок
@@ -235,8 +231,15 @@ export default class LevelContainer extends Container {
 		if (
 			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox) &&
 			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox)
-		) {
+		){
 			console.log("ENDGAME");
+			this.removeChild(this._background);
+			this.removeChild(LevelContainer.TELEPORT_1);
+			this.removeChild(LevelContainer.PLAYER_1);
+			if (Global.STAGE){
+				this.removeChild(Global.STAGE);
+			}
+			Global.PIXI_APP.ticker.remove(this.ticker, this);
 		}
 
 		if (isDamaged) {

@@ -21,7 +21,7 @@ export class Teleport extends Container {
 
 		this.hitbox = new PIXI.Graphics;
 		this.hitbox
-			.beginFill(0x555555, 1)
+			.beginFill(0x555555, 0)
 			.drawRect(
 				0,
 				0,
