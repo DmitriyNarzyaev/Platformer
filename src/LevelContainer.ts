@@ -9,6 +9,7 @@ import { Title } from "./Title";
 import Button from "./Button";
 
 export default class LevelContainer extends Container {
+	public static readonly END_GAME_EVENT:symbol = Symbol();
 	public static readonly WIDTH:number = 3000;
     public static readonly HEIGHT:number = 1500;
 	public static PLAYER_1:Player;
@@ -22,8 +23,7 @@ export default class LevelContainer extends Container {
 	private _playerStartX:number;
 	private _playerStartY:number;
 
-	public title:Title;
-	public button:Button;
+
 
 	constructor() {
 		super();
@@ -232,14 +232,16 @@ export default class LevelContainer extends Container {
 			HitTest.horizontal(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox) &&
 			HitTest.vertical(LevelContainer.PLAYER_1, LevelContainer.TELEPORT_1.hitbox)
 		){
-			console.log("ENDGAME");
+			//console.log("ENDGAME");
 			this.removeChild(this._background);
 			this.removeChild(LevelContainer.TELEPORT_1);
 			this.removeChild(LevelContainer.PLAYER_1);
-			if (Global.STAGE){
-				this.removeChild(Global.STAGE);
+			if (Global.LEVEL){
+				this.removeChild(Global.LEVEL);
 			}
 			Global.PIXI_APP.ticker.remove(this.ticker, this);
+
+			this.emit(LevelContainer.END_GAME_EVENT);
 		}
 
 		if (isDamaged) {

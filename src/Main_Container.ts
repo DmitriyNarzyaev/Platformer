@@ -34,12 +34,18 @@ export default class Main_Container extends Container {
 		this.removeChild(this._button);
 
 		Global.PIXI_APP.ticker.add(this.ticker, this);
-		//this.initialMask();
+		this.initialMask();
 		this._levelContainer = new LevelContainer();
 		this.addChild(this._levelContainer);
+		this._levelContainer.addListener(LevelContainer.END_GAME_EVENT, this.endGameHandler, this);
 
-		Global.STAGE = new Stage1;
-		this._levelContainer.addChild(Global.STAGE);
+		Global.LEVEL = new Stage1;
+		this._levelContainer.addChild(Global.LEVEL);
+	}
+
+	private endGameHandler(e:Event):void {
+		console.log("ENDGAME");
+		this.initialTitle("RESTART");
 	}
 
 	private initialMask():void {

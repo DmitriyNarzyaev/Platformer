@@ -3,5 +3,5 @@ import Application = PIXI.Application;
 
 export default class Global {
     public static PIXI_APP:Application;
-    public static STAGE:Container;
+    public static LEVEL:Container;
 }
