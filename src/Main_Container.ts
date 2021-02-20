@@ -22,6 +22,13 @@ export default class Main_Container extends Container {
 	}
 
 	private initialTitle(buttonName:string):void {
+		if (Global.PIXI_APP.ticker) {
+			Global.PIXI_APP.ticker.remove(this.ticker, this);
+		}
+		if (this._containerMask) {
+			this.removeChild(this._containerMask);
+		}
+
 		this._title = new Title();
 		this.addChild(this._title);
 

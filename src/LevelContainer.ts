@@ -5,8 +5,6 @@ import { Platform } from "./Platform";
 import HitTest from "./HitTest";
 import { Teleport } from "./Teleport";
 import Global from "./Global";
-import { Title } from "./Title";
-import Button from "./Button";
 
 export default class LevelContainer extends Container {
 	public static readonly END_GAME_EVENT:symbol = Symbol();
@@ -238,8 +236,8 @@ export default class LevelContainer extends Container {
 				this.removeChild(Global.LEVEL);
 			}
 			Global.PIXI_APP.ticker.remove(this.ticker, this);
-
 			this.emit(LevelContainer.END_GAME_EVENT);
+			LevelContainer.PLATFORM_ARRAY = [];
 		}
 
 		if (isDamaged) {
