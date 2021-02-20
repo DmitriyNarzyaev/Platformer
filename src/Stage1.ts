@@ -5,22 +5,23 @@ import { Main } from "./Main";
 
 export default class Stage1 extends Container {
     private _blockSize:number = 50;
+	private _level:ILevel;
 
-	constructor() {
+	constructor(level:ILevel) {
 		super();
+		this._level = level;
         this.stageLoader();
 	}
 
     private stageLoader():void {
-		const json:ILevel = Main.xhr.response;
-		for (let iterator:number = 0; iterator < json.blocks.length; iterator++) {
-			let blockImage:string = json.blocks[iterator].type;
-			let blockDamage:string = json.blocks[iterator].damage;
-			let nineSlice:string = json.blocks[iterator].nineSlice;
-			let blockX:number = this._blockSize * json.blocks[iterator].x;
-			let blockY:number = this._blockSize * json.blocks[iterator].y;
-			let blockWidth:number = this._blockSize * json.blocks[iterator].width;
-			let blockHeight:number = this._blockSize * json.blocks[iterator].height;
+		for (let iterator:number = 0; iterator < this._level.blocks.length; iterator++) {
+			let blockImage:string = this._level.blocks[iterator].type;
+			let blockDamage:string = this._level.blocks[iterator].damage;
+			let nineSlice:string = this._level.blocks[iterator].nineSlice;
+			let blockX:number = this._blockSize * this._level.blocks[iterator].x;
+			let blockY:number = this._blockSize * this._level.blocks[iterator].y;
+			let blockWidth:number = this._blockSize * this._level.blocks[iterator].width;
+			let blockHeight:number = this._blockSize * this._level.blocks[iterator].height;
 			let platform:Platform = new Platform(blockImage, nineSlice, blockWidth, blockHeight);
 			this.addChild(platform);
 			platform.x = blockX;
@@ -33,18 +34,4 @@ export default class Stage1 extends Container {
 			LevelContainer.PLATFORM_ARRAY.push(platform);
 		}
 	}
-}
-
-interface ILevel {
-	blocks:IBlock[];
-}
-
-interface IBlock {
-	type:string;
-	damage:string;
-	nineSlice:string;
-	x:number;
-	y:number;
-	width:number;
-	height:number;
 }

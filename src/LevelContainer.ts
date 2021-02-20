@@ -23,8 +23,6 @@ export default class LevelContainer extends Container {
 	private _playerStartX:number;
 	private _playerStartY:number;
 
-
-
 	constructor() {
 		super();
         this.initBackground();
@@ -63,7 +61,7 @@ export default class LevelContainer extends Container {
 		LevelContainer.TELEPORT_1 = new Teleport();
 		this.addChild(LevelContainer.TELEPORT_1);
 		LevelContainer.TELEPORT_1.x = 400; //2850;
-		LevelContainer.TELEPORT_1.y = 1200; //300;
+		LevelContainer.TELEPORT_1.y = 900; //300;
 		LevelContainer.TELEPORT_1.width = LevelContainer.TELEPORT_1.teleportWidth;
 		LevelContainer.TELEPORT_1.height = LevelContainer.TELEPORT_1.teleportHeight;
 		LevelContainer.TELEPORT_1.hitbox.x -= LevelContainer.TELEPORT_1.teleportWidth/2;

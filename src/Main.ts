@@ -30,7 +30,7 @@ export class Main extends Container {
 		loader.add("teleport", "teleport.png");
 		loader.on("complete", ()=> {
 			this._loaderIterator += 1;
-			this.initialComplite();
+			this.initialComplete();
 		});
 		loader.load();
 	}
@@ -43,7 +43,7 @@ export class Main extends Container {
 			if (Main.xhr.readyState === 4) {
 				if (Main.xhr.status === 200) {
 					this._loaderIterator += 1;
-					this.initialComplite();
+					this.initialComplete();
 				} else {
 					console.log("ERROR");
 				}
@@ -52,9 +52,9 @@ export class Main extends Container {
 		Main.xhr.send();
 	}
 
-	private initialComplite():void {
+	private initialComplete():void {
 		if (this._loaderIterator == 2){
-			this.initMainContainer();
+			this.initMainContainer(Main.xhr.response);
 			window.onresize = () => { this.resize(); };
 			this.resize();
 		}
@@ -74,8 +74,8 @@ export class Main extends Container {
 		Global.PIXI_APP.stage.addChild(this);
 	}
 
-	private initMainContainer():void {
-		this._mainContainer = new MainContainer();
+	private initMainContainer(level:ILevel):void {
+		this._mainContainer = new MainContainer(level);
 		this._mainContainer.width = window.innerWidth;
 		this._mainContainer.height = window.innerHeight;
 		Global.PIXI_APP.stage.addChild(this._mainContainer);

@@ -13,9 +13,11 @@ export default class Main_Container extends Container {
 	private _title:Title;
 	private _button:Button;
 	private _containerMask:PIXI.Graphics;
+	private _level:ILevel;
 
-	constructor() {
+	constructor(level:ILevel) {
 		super();
+		this._level = level;
 		this.initialTitle("START");
 	}
 
@@ -39,7 +41,7 @@ export default class Main_Container extends Container {
 		this.addChild(this._levelContainer);
 		this._levelContainer.addListener(LevelContainer.END_GAME_EVENT, this.endGameHandler, this);
 
-		Global.LEVEL = new Stage1;
+		Global.LEVEL = new Stage1(this._level);
 		this._levelContainer.addChild(Global.LEVEL);
 	}
 
