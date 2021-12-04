@@ -52,14 +52,21 @@ export default class LevelContainer extends Container {
 			this._playerStartY = LevelContainer.HEIGHT - LevelContainer.PLAYER_1.height - this._gap*10;
 		LevelContainer.PLAYER_1.x = this._playerStartX;
 		LevelContainer.PLAYER_1.y = this._playerStartY;
+			//test
+		//LevelContainer.PLAYER_1.x = 500;
+		//LevelContainer.PLAYER_1.y = 50;
 	}
 
 	//Создание телепорта
 	private initTeleport():void {
 		LevelContainer.TELEPORT_1 = new Teleport();
 		this.addChild(LevelContainer.TELEPORT_1);
-		LevelContainer.TELEPORT_1.x = 400; //2850;
-		LevelContainer.TELEPORT_1.y = 900; //300;
+		LevelContainer.TELEPORT_1.x = 2850;
+		LevelContainer.TELEPORT_1.y = 300;
+			//test
+		//LevelContainer.TELEPORT_1.x = 400;
+		//LevelContainer.TELEPORT_1.y = 900;
+
 		LevelContainer.TELEPORT_1.width = LevelContainer.TELEPORT_1.teleportWidth;
 		LevelContainer.TELEPORT_1.height = LevelContainer.TELEPORT_1.teleportHeight;
 		LevelContainer.TELEPORT_1.hitbox.x -= LevelContainer.TELEPORT_1.teleportWidth/2;
